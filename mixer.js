@@ -561,7 +561,7 @@
     //These sources could eventually be loaded from the server
     var sources = [
         //'Vox.mp3', 'Strings.mp3','Acous_Gtr.mp3','Bass_&_Drums.mp3'
-        'Acous_Gtr.mp3', 'Strings.mp3','Bass_&_Drums.mp3', 'Mellotron.mp3','Bck_vox.mp3','Stylophone.mp3','Vox.mp3','Flute_&_Cello.mp3','Let_The_Good_Times_Roll-flute'
+        'Acous_Gtr.mp3', 'Strings.mp3','Bass_&_Drums.mp3', 'Mellotron.mp3','Bck_vox.mp3','Stylophone.mp3','Vox.mp3','Flute_&_Cello.mp3','Let_The_Good_Times_Roll-Flute.mp3'
 
     ];
 
