@@ -461,6 +461,26 @@
     //break event listeners out in to seperate method
     Channel.prototype.createChannelControls = function() {
         var self = this;
+        this.highShelfControl = new RotaryKnob(this.el, 'HIGH');
+        this.highShelfControl.on('change', function(e, val) {
+            self.highShelfFilter.gain.value = val;
+        });
+        this.midControl = new RotaryKnob(this.el, 'MID', 'mid');
+        this.midControl.on('change', function(e, val) {
+            self.midFilter.gain.value = val;
+        });
+        this.midFrequencyControl = new RotaryKnob(this.el, 'MID', 'mid');
+        this.midFrequencyControl.on('change', function(e, val) {
+            //a little hack to get rotary to output frequency between 100hz-10khz
+            var pos = val + 32;
+            var value = pos < 30 ? pos * 100 : pos * 160;
+            if (value < 100) value = 100;
+            self.midFilter.frequency.value = value;
+        });
+        this.lowShelfControl = new RotaryKnob(this.el, 'LOW');
+        this.lowShelfControl.on('change', function(e, val) {
+            self.lowShelfFilter.gain.value = val;
+        });
         this.pannerControl = new RotaryKnob(this.el, 'PAN', 'panner');
         this.pannerControl.on('change', function(e, val) {
             self.panner.pan.value = val / 31;
@@ -505,6 +525,10 @@
 
     Channel.prototype.connect = function() {
         this.track.connect(this.highPassFilter);
+        this.highPassFilter.connect(this.lowShelfFilter)
+        this.lowShelfFilter.connect(this.highShelfFilter)
+        this.highShelfFilter.connect(this.midFilter);
+        this.midFilter.connect(this.panner)
         this.panner.connect(this.gain)
         this.gain.connect(this.mixer.masterGain)
         this.mixer.masterGain.connect(this.ctx.destination)
@@ -520,6 +544,14 @@
         this.gain.gain.value = 1.0;
     };
 
+    Channel.prototype.createChannelFilters = function(channel, track, ctx) {
+        this.highPassFilter = Filter(this.ctx, 'highpass', 80, 0);
+        this.lowShelfFilter = Filter(this.ctx, 'lowshelf', 90, 0);
+        this.highShelfFilter = Filter(this.ctx, 'highshelf',
+            10000, 0);
+        this.midFilter = Filter(this.ctx, 'peaking', 10000, 0);
+    };
+
     function init() {
 
             new Daw();
@@ -529,7 +561,7 @@
     //These sources could eventually be loaded from the server
     var sources = [
         //'Vox.mp3', 'Strings.mp3','Acous_Gtr.mp3','Bass_&_Drums.mp3'
-        'Acous_Gtr.mp3', 'Strings.mp3','Bass_&_Drums.mp3', 'Mellotron.mp3','Bck_vox.mp3','Stylophone.mp3','Vox.mp3','Flute_&_Cello.mp3','Let_The_Good_Times_Roll-Flute.mp3'
+        'Acous_Gtr.mp3', 'Strings.mp3','Bass_&_Drums.mp3', 'Mellotron.mp3','Bck_vox.mp3','Stylophone.mp3','Vox.mp3','Flute_&_Cello.mp3','Let_The_Good_Times_Roll-flute'
 
     ];
 
