@@ -432,7 +432,7 @@
     };
 
     Channel.prototype.createChannelLabel = function() {
-        var trackName = this.trackName.replace('.mp3', '').replace(/_/g,
+        var trackName = this.trackName.replace('-LTGTR.mp3', '').replace(/_/g,
             ' ');
         this.el.find('.fader-container').prepend('<p class="label">' +
             trackName + '</p>');
