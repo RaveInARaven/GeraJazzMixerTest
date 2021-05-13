@@ -541,7 +541,7 @@
 
     Channel.prototype.createChannelFader = function(channel, track, ctx) {
         this.gain = this.ctx.createGain();
-        this.gain.gain.value = 0.2;
+        this.gain.gain.value = 1.0;
     };
 
     Channel.prototype.createChannelFilters = function(channel, track, ctx) {
